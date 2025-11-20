@@ -30,12 +30,13 @@ Railway provides easy PostgreSQL + Redis + Node.js deployment.
 
 5. **Configure Environment Variables:**
    - Go to your service → "Variables"
-   - Add:
+   - Railway automatically sets `REDIS_URL` and `DATABASE_URL` when services are linked
+   - Add manually if needed:
      ```
      NODE_ENV=production
      PORT=3000
-     REDIS_HOST=<from Redis service>
-     REDIS_PORT=6379
+     QUEUE_CONCURRENCY=10
+     QUEUE_RATE_LIMIT=100
      ```
 
 6. **Deploy:**
@@ -45,6 +46,34 @@ Railway provides easy PostgreSQL + Redis + Node.js deployment.
 7. **Get your URL:**
    - Railway provides a public URL like: `https://your-app.railway.app`
    - Update this in your README
+
+### Railway Troubleshooting
+
+**Redis Connection Issues:**
+
+If you see `ECONNREFUSED` errors:
+
+1. **Verify Redis Service:**
+   - Check that Redis service exists in your Railway project
+   - Ensure it's "Running" (not paused - free tier pauses after inactivity)
+
+2. **Check REDIS_URL Variable:**
+   - Go to Order_Execution_Engine service → Variables
+   - Look for `REDIS_URL` - Railway should auto-set this
+   - If missing:
+     - Go to Redis service → Variables
+     - Copy the `REDIS_URL` value
+     - Add it to Order_Execution_Engine → Variables
+
+3. **Verify Variable Format:**
+   - `REDIS_URL` should be: `redis://default:password@hostname:port`
+   - The code supports both `REDIS_URL` and individual `REDIS_HOST`/`REDIS_PORT` variables
+
+4. **Check Logs:**
+   - Look for "Redis connected successfully" message
+   - Connection errors will show which address/port it's trying
+
+**Note:** Railway automatically links services in the same project. If `REDIS_URL` isn't auto-set, services might not be properly linked.
 
 ## Option 2: Render
 
@@ -156,6 +185,8 @@ QUEUE_RATE_LIMIT=100
 - Verify Redis credentials are correct
 - Check if Redis requires SSL/TLS (some cloud providers do)
 - Ensure Redis is accessible from your hosting platform
+- **Railway**: Ensure `REDIS_URL` is set (auto-set when Redis service is linked)
+- **Railway**: Check that Redis service is running (not paused)
 
 ### Build Failures
 - Check Node.js version (should be 18+)
