@@ -333,17 +333,6 @@ QUEUE_RATE_LIMIT=100
 
 See `postman_collection.json` for API collection with example requests.
 
-## 🎥 Demo Video
-
-**Video Link:** [Add YouTube link here after uploading]
-
-The demo video shows:
-- Order flow through the system and design decisions
-- Submitting 3-5 orders simultaneously
-- WebSocket showing all status updates (pending → routing → confirmed)
-- DEX routing decisions in logs/console
-- Queue processing multiple orders
-
 ## 🔍 Monitoring & Logging
 
 - All order status transitions are logged
