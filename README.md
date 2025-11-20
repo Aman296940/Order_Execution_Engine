@@ -273,37 +273,61 @@ OrderExecutionEngine/
 
 ## 🚢 Deployment
 
-### Quick Deploy
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-**Recommended Platforms:**
-- **Railway**: Easy PostgreSQL + Redis + Node.js deployment (recommended)
-- **Render**: Free tier with PostgreSQL
-- **Fly.io**: Good for containerized deployments
-
 ### Production URL
 
 **Deployed at:** https://orderexecutionengine-production.up.railway.app/
 
-### Environment Variables for Production
+### Deploy to Railway (Recommended)
 
-Ensure all environment variables are set in your production environment:
+1. **Sign up at [railway.app](https://railway.app)**
+
+2. **Create a new project:**
+   - Click "New Project" → "Deploy from GitHub repo"
+   - Connect your GitHub account and select the repository
+
+3. **Add PostgreSQL:**
+   - Click "+ New" → "Database" → "PostgreSQL"
+   - Railway automatically sets `DATABASE_URL` environment variable
+
+4. **Add Redis:**
+   - Click "+ New" → "Database" → "Redis"
+   - Railway automatically sets `REDIS_URL` environment variable
+
+5. **Configure Environment Variables:**
+   - Go to your service → "Variables"
+   - Railway auto-sets `REDIS_URL` and `DATABASE_URL` when services are linked
+   - Add if needed:
+     ```
+     NODE_ENV=production
+     PORT=3000
+     QUEUE_CONCURRENCY=10
+     QUEUE_RATE_LIMIT=100
+     ```
+
+6. **Deploy:**
+   - Railway automatically deploys on push to main branch
+   - Get your public URL from Railway dashboard
+
+### Environment Variables
 
 ```env
 NODE_ENV=production
 PORT=3000
-DATABASE_URL=<postgresql-connection-string>
-REDIS_HOST=<redis-host>
-REDIS_PORT=6379
-REDIS_PASSWORD=<redis-password-if-needed>
+DATABASE_URL=<auto-set by Railway>
+REDIS_URL=<auto-set by Railway>
 QUEUE_CONCURRENCY=10
 QUEUE_RATE_LIMIT=100
 ```
 
-### Database Migrations
+### Troubleshooting
 
-The database schema is automatically created on first run. For production, consider using proper migration tools.
+**Redis Connection Issues on Railway:**
+- Verify Redis service exists and is "Running" (not paused)
+- Check that `REDIS_URL` is set in your service Variables
+- If missing, copy `REDIS_URL` from Redis service → Variables and add to your app service
+- Format should be: `redis://default:password@hostname:port`
+
+**Note:** Railway automatically links services in the same project. The database schema is created automatically on first run.
 
 ## 📝 Postman/Insomnia Collection
 
