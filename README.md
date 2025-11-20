@@ -284,7 +284,7 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
 
 ### Production URL
 
-**Deployed at:** [Add your deployment URL here after hosting]
+**Deployed at:** https://orderexecutionengine-production.up.railway.app/
 
 ### Environment Variables for Production
 
